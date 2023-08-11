@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended : true}))
 
 app.set("view engine","ejs"); //setting up ejs to run ejs in node 
 
+app.use(express.static("./public"))
 
 app.get("/",async(req, res)=>{  
      const allBlogs =await blogs.findAll({
@@ -36,6 +37,21 @@ app.get("/singleBlog/:id",async(req, res)=>{
     })
     res.render("singleBlog",{allBlogs});
 });
+
+app.get("/edit/:id",(req, res)=>{
+    const id = req.params.id;
+    res.render("/editBlog",{id : id})
+})
+
+app.post("editblog/:id",async(req, res)=>{
+    const id = req.params.id;
+    const allBlogs = await blogs.findAll({
+        where: {
+            id,
+        },
+    })
+   
+})
 
 app.post("/newBlog",async(req, res)=>{
     
